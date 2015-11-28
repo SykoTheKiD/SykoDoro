@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sykodoro</string>
+    <string name="app_name">SykoDoro</string>
     <string name="action_settings">Settings</string>
     <string name="reset_button">Reset</string>
     <string name="control_button">Start</string>

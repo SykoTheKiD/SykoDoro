@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,22 +14,23 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private Button timeControlButton;
-    private TextView timerValue;
+
     private long initValue = 0L;
     private Handler handler = new Handler();
     long timeMilli = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+    int numPomo = 0;
     static final int POMODORO_TIME = 5;
+    static final int BREAK_TIME = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        timerValue = (TextView) findViewById(R.id.timerValue);
         timeControlButton = (Button)findViewById(R.id.controlButton);
         timeControlButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (timeControlButton.getText() == "Start") {
@@ -42,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     timeSwapBuff += timeMilli;
                     handler.removeCallbacks(updateTimerThread);
                 }
-          }
+            }
         });
-
         setSupportActionBar(toolbar);
     }
 
@@ -58,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
             if(secs < POMODORO_TIME) {
                 secs %= 60;
                 int milli = (int)(updatedTime % 1000);
-                Log.d("SECS", String.valueOf(secs));
                 final String seconds = String.format("%02d", secs);
                 final String milliseconds = String.format("%03d", milli);
                 final String time = String.format("%s:%s:%s", mins, seconds, milliseconds);
-                timerValue.setText(time);
+                setClock(time);
                 handler.postDelayed(this, 0);
             }else{
+                startBreakTime();
                 handler.removeCallbacksAndMessages(updateTimerThread);
             }
         }
@@ -83,5 +82,31 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startBreakTime() {
+        TextView mode = (TextView)findViewById(R.id.mode_tv);
+        mode.setText(" Break Time");
+        numPomo +=1;
+        TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
+        String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numPomo);
+        pomoCount.setText(pomoCountText);
+        TextView stats = (TextView)findViewById(R.id.stats);
+        String statsText = String.format("%d Minutes of Work Done\n0 minutes of Break Time", numPomo * POMODORO_TIME);
+        stats.setText(statsText);
+        initClock();
+    }
+
+    private void setClock(String time) {
+        TextView timerValue = (TextView) findViewById(R.id.timerValue);
+        timerValue.setText(time);
+    }
+
+    private void initClock(){
+        initValue = 0L;
+        timeSwapBuff = 0L;
+        updatedTime = 0L;
+        timeMilli = 0L;
+        setClock("0:00:000");
     }
 }
