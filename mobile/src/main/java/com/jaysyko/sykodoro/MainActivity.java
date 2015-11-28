@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     long timeMilli = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+    static final int POMODORO_TIME = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     timeSwapBuff += timeMilli;
                     handler.removeCallbacks(updateTimerThread);
                 }
-            }
+          }
         });
 
         setSupportActionBar(toolbar);
@@ -53,35 +55,33 @@ public class MainActivity extends AppCompatActivity {
             updatedTime = timeSwapBuff + timeMilli;
             int secs = (int) (updatedTime / 1000);
             int mins = secs/60;
-            secs %= 60;
-            int milli = (int)(updatedTime %1000);
-            final String seconds = String.format("%02d", secs);
-            final String milliseconds = String.format("%03d", milli);
-            final String time = String.format("%s:%s:%s", mins, seconds, milliseconds);
-            timerValue.setText(time);
-            handler.postDelayed(this, 0);
+            if(secs < POMODORO_TIME) {
+                secs %= 60;
+                int milli = (int)(updatedTime % 1000);
+                Log.d("SECS", String.valueOf(secs));
+                final String seconds = String.format("%02d", secs);
+                final String milliseconds = String.format("%03d", milli);
+                final String time = String.format("%s:%s:%s", mins, seconds, milliseconds);
+                timerValue.setText(time);
+                handler.postDelayed(this, 0);
+            }else{
+                handler.removeCallbacksAndMessages(updateTimerThread);
+            }
         }
     };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

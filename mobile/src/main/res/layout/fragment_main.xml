@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#000000"
+    android:background="#E91E63"
     tools:context="com.jaysyko.sykodoro.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
@@ -14,28 +14,42 @@
         android:id="@+id/timerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="71dp"
         android:textSize="40sp"
         android:textColor="#ffffff"
         android:text="@string/time_value"
-        android:layout_above="@+id/controlButton"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="90dp"
-        android:layout_height="45dp"
-        android:text="@string/reset_button"
-        android:layout_alignTop="@+id/controlButton"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="81dp" />
+        android:layout_marginTop="29dp" />
 
     <Button
         android:id="@+id/controlButton"
         android:layout_width="90dp"
         android:layout_height="45dp"
         android:text="@string/control_button"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/resetButton"
-        android:layout_alignStart="@+id/resetButton" />
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/timerValue"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/pomoOne"
+        android:layout_marginTop="59dp"
+        android:layout_below="@+id/controlButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/stats"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/pomoOne"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
