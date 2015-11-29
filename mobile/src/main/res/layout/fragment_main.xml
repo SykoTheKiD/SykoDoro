@@ -37,22 +37,20 @@
         android:text="0/4 Pomodoro Cycles Complete"
         android:id="@+id/pomoCount"
         android:textColor="#ffffff"
-        android:layout_marginTop="33dp"
         android:layout_below="@+id/controlButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0 Minutes of Work Done\n0 minutes of Break Time"
-        android:id="@+id/stats"
+        android:text="0 Total Minutes of Work Done"
+        android:id="@+id/workStats"
         android:textColor="#ffffff"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="43dp"
         android:layout_below="@+id/pomoCount"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,7 +61,16 @@
         android:textColor="#ffffff"
         android:layout_marginTop="43dp"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/controlButton"
-        android:layout_alignEnd="@+id/controlButton" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0 Total Minutes of Break Time"
+        android:textColor="#ffffff"
+        android:id="@+id/breakStats"
+        android:layout_below="@+id/workStats"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

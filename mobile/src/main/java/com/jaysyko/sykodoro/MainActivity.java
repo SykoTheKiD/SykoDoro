@@ -13,16 +13,17 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final String BREAK_TIME = "Break Time";
+    static final String WORK_TIME = "Work Time";
     private Button timeControlButton;
-
     private long initValue = 0L;
     private Handler handler = new Handler();
     long timeMilli = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
     int numPomo = 0;
+    boolean work = false;
     static final int POMODORO_TIME = 5;
-    static final int BREAK_TIME = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +34,8 @@ public class MainActivity extends AppCompatActivity {
         timeControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (timeControlButton.getText() == "Start") {
-                    timeControlButton.setText("Pause");
-                    initValue = SystemClock.uptimeMillis();
-                    handler.postDelayed(updateTimerThread, 0);
-                } else {
-                    timeControlButton.setText("Start");
-                    timeSwapBuff += timeMilli;
-                    handler.removeCallbacks(updateTimerThread);
-                }
+                initValue = SystemClock.uptimeMillis();
+                handler.postDelayed(updateTimerThread, 0);
             }
         });
         setSupportActionBar(toolbar);
@@ -63,9 +57,22 @@ public class MainActivity extends AppCompatActivity {
                 setClock(time);
                 handler.postDelayed(this, 0);
             }else{
-                startBreakTime();
-                handler.removeCallbacksAndMessages(updateTimerThread);
+                handler.postDelayed(updateStatusThread, 0);
+                handler.removeCallbacksAndMessages(this);
             }
+        }
+    };
+    private Runnable updateStatusThread = new Runnable() {
+        @Override
+        public void run() {
+            if (work){
+                workTime();
+                work = false;
+            }else{
+                breakTime();
+                work = true;
+            }
+            handler.removeCallbacksAndMessages(this);
         }
     };
 
@@ -84,15 +91,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startBreakTime() {
+    private void breakTime() {
         TextView mode = (TextView)findViewById(R.id.mode_tv);
-        mode.setText(" Break Time");
+        mode.setText(BREAK_TIME);
         numPomo +=1;
         TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
         String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numPomo);
         pomoCount.setText(pomoCountText);
-        TextView stats = (TextView)findViewById(R.id.stats);
-        String statsText = String.format("%d Minutes of Work Done\n0 minutes of Break Time", numPomo * POMODORO_TIME);
+        TextView stats = (TextView)findViewById(R.id.workStats);
+        String statsText = String.format("%d Total Minutes of Work Done", numPomo * POMODORO_TIME);
+        stats.setText(statsText);
+        initClock();
+    }
+
+    private void workTime(){
+        TextView mode = (TextView)findViewById(R.id.mode_tv);
+        mode.setText(WORK_TIME);
+        TextView stats = (TextView)findViewById(R.id.breakStats);
+        String statsText = String.format("%d Total Minutes of Break Time", numPomo * POMODORO_TIME);
         stats.setText(statsText);
         initClock();
     }
@@ -100,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
     private void setClock(String time) {
         TextView timerValue = (TextView) findViewById(R.id.timerValue);
         timerValue.setText(time);
+    }
+
+    private void swapButtonText(){
+        if(timeControlButton.getText().equals("Start")){
+            timeControlButton.setText("Pause");
+        }else{
+            timeControlButton.setText("Start");
+        }
     }
 
     private void initClock(){
