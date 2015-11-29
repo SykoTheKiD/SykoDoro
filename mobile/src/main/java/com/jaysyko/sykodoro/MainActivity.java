@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     static final String BREAK_TIME = "Break Time";
     static final String WORK_TIME = "Work Time";
+    public static final int MAX_POMODORO = 4;
     private Button timeControlButton;
     private long initValue = 0L;
     private Handler handler = new Handler();
@@ -22,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
     int numPomo = 0;
+    int breakTime = 5;
     boolean work = false;
-    static final int POMODORO_TIME = 5;
+    int pomodoroTime = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             updatedTime = timeSwapBuff + timeMilli;
             int secs = (int) (updatedTime / 1000);
             int mins = secs/60;
-            if(secs < POMODORO_TIME) {
+            if(secs < pomodoroTime) {
                 secs %= 60;
                 int milli = (int)(updatedTime % 1000);
                 final String seconds = String.format("%02d", secs);
@@ -95,12 +97,20 @@ public class MainActivity extends AppCompatActivity {
         TextView mode = (TextView)findViewById(R.id.mode_tv);
         mode.setText(BREAK_TIME);
         numPomo +=1;
-        TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
-        String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numPomo);
-        pomoCount.setText(pomoCountText);
-        TextView stats = (TextView)findViewById(R.id.workStats);
-        String statsText = String.format("%d Total Minutes of Work Done", numPomo * POMODORO_TIME);
-        stats.setText(statsText);
+        if(numPomo == MAX_POMODORO){
+            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
+            pomoCount.setText("Pomodoro Sequence Complete!\n\t\t\t\t\t\t\t\t\t\t\t\t25 Minute Break");
+            numPomo = 0;
+            pomodoroTime = 2;
+        }else{
+            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
+            String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numPomo);
+            pomoCount.setText(pomoCountText);
+            breakTime = 10;
+            TextView stats = (TextView)findViewById(R.id.workStats);
+            String statsText = String.format("%d Total Minutes of Work Done", numPomo * pomodoroTime);
+            stats.setText(statsText);
+        }
         initClock();
     }
 
@@ -108,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         TextView mode = (TextView)findViewById(R.id.mode_tv);
         mode.setText(WORK_TIME);
         TextView stats = (TextView)findViewById(R.id.breakStats);
-        String statsText = String.format("%d Total Minutes of Break Time", numPomo * POMODORO_TIME);
+        String statsText = String.format("%d Total Minutes of Break Time", numPomo * pomodoroTime);
         stats.setText(statsText);
         initClock();
     }
