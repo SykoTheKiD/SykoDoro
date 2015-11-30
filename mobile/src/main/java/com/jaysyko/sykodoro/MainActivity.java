@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     static final String PAUSE_TITLE = "Pause";
     static final int WORK_TIME = 1;
     static final int BREAK_TIME = 2;
+    static final int MAX_BREAK_TIME = 25;
 
     private Button timeControlButton;
     private Handler handler = new Handler();
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     long updatedTime = 0L;
     int numCycles = 0;
 
-    boolean work = true;
+    boolean doneWork = false;
     int pomodoroTime = 1;
     int totalWorkTime = 0;
     int totalBreakTime = 0;
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initValue = SystemClock.uptimeMillis();
-                swapButtonText();
                 handler.postDelayed(updateTimerThread, 0);
             }
         });
@@ -65,27 +65,39 @@ public class MainActivity extends AppCompatActivity {
                 final String milliseconds = String.format("%03d", milli);
                 final String time = String.format("%s:%s:%s", mins, seconds, milliseconds);
                 setClock(time);
-                handler.postDelayed(this, 0);
+                handler.post(this);
             }else{
-                handler.postDelayed(updateStatusThread, 0);
-                swapButtonText();
+                handler.post(updateStatusThread);
                 handler.removeCallbacksAndMessages(this);
             }
         }
     };
+
     private Runnable updateStatusThread = new Runnable() {
         @Override
         public void run() {
-            if (work){
-                workTime();
-                work = false;
-            }else{
-                breakTime();
-                work = true;
-            }
-            handler.removeCallbacksAndMessages(this);
+            doneWork ^= true;
+            updateStatusText();
         }
     };
+
+    private void updateStatusText() {
+        TextView stats;
+        String statsText;
+        TextView mode = (TextView)findViewById(R.id.mode_tv);
+        if(doneWork){
+            mode.setText(BREAK_TIME_TITLE);
+            stats = (TextView)findViewById(R.id.breakStats);
+            totalWorkTime += WORK_TIME;
+            statsText = String.format("%d Total Minutes of Work Time", totalWorkTime);
+        }else{
+            mode.setText(WORK_TIME_TITLE);
+            stats = (TextView)findViewById(R.id.workStats);
+            totalBreakTime += BREAK_TIME;
+            statsText = String.format("%d Total Minutes of Break Time", totalBreakTime);
+        }
+        stats.setText(statsText);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,16 +119,17 @@ public class MainActivity extends AppCompatActivity {
             TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
             pomoCount.setText(getString(R.string.break_text));
             numCycles = 0;
-            totalBreakTime += 25;
+            totalBreakTime += MAX_BREAK_TIME;
         }else{
             TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
             String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numCycles);
             pomoCount.setText(pomoCountText);
             totalBreakTime += BREAK_TIME;
-            TextView stats = (TextView)findViewById(R.id.breakStats);
-            String statsText = String.format("%d Total Minutes of Break Time",totalBreakTime);
-            stats.setText(statsText);
         }
+        TextView stats = (TextView)findViewById(R.id.breakStats);
+        String statsText = String.format("%d Total Minutes of Break Time",totalBreakTime);
+        stats.setText(statsText);
+        doneWork = true;
         initClock();
     }
 
@@ -128,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         String statsText = String.format("%d Total Minutes of Work Done", totalWorkTime);
         stats.setText(statsText);
         initClock();
+        doneWork = false;
     }
 
     private void setClock(String time) {
