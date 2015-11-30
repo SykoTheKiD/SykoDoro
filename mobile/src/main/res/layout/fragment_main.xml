@@ -28,7 +28,12 @@
         android:text="@string/control_button"
         android:layout_marginTop="49dp"
         android:layout_below="@+id/timerValue"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/timerValue"
+        android:layout_alignEnd="@+id/timerValue"
+        android:layout_alignLeft="@+id/timerValue"
+        android:layout_alignStart="@+id/timerValue"
+        android:background="#565656"
+        android:textColor="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,7 +75,7 @@
         android:text="0 Total Minutes of Break Time"
         android:textColor="#ffffff"
         android:id="@+id/breakStats"
-        android:layout_below="@+id/workStats"
+        android:layout_below="@id/workStats"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
