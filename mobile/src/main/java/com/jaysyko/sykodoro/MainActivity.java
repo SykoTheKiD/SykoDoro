@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateStatusText() {
         // Update Number of cycles
+        TextView countStat = (TextView) findViewById(R.id.pomoCount);
+        countStat.setText(String.format("%d/4 Pomodoro Cycles Complete", numPomodoro));
 
         // Update total work done time
         TextView stats;
@@ -97,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 time = BREAK_TIME;
             }
-            Log.d("NUMPOMO", String.valueOf(numPomodoro));
-            Log.d("TIME", String.valueOf(time));
             mode.setText(BREAK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.breakStats);
             totalWorkTime += WORK_TIME;
