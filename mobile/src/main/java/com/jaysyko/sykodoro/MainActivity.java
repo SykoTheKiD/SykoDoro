@@ -126,41 +126,6 @@ public class MainActivity extends AppCompatActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
-    // Manage the two types of breaks; large breaks and short breaks
-//    private void breakTime() {
-//        TextView mode = (TextView)findViewById(R.id.mode_tv);
-//        mode.setText(BREAK_TIME_TITLE);
-//        numCycles +=1;
-//        if(numCycles == MAX_POMODORO){
-//            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
-//            pomoCount.setText(getString(R.string.break_text));
-//            numCycles = 0;
-//            totalBreakTime += MAX_BREAK_TIME;
-//        }else{
-//            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
-//            String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numCycles);
-//            pomoCount.setText(pomoCountText);
-//            totalBreakTime += BREAK_TIME;
-//        }
-//        TextView stats = (TextView)findViewById(R.id.breakStats);
-//        String statsText = String.format("%d Total Minutes of Break Time",totalBreakTime);
-//        stats.setText(statsText);
-//        doneWork = true;
-//        initClock();
-//    }
-
-    // Manage Work time
-//    private void workTime(){
-//        TextView mode = (TextView)findViewById(R.id.mode_tv);
-//        mode.setText(WORK_TIME_TITLE);
-//        totalWorkTime += WORK_TIME;
-//        TextView stats = (TextView)findViewById(R.id.workStats);
-//        String statsText = String.format("%d Total Minutes of Work Done", totalWorkTime);
-//        stats.setText(statsText);
-//        initClock();
-//        doneWork = false;
-//    }
-
     // Set value to clock
     private void setClock(String time) {
         TextView timerValue = (TextView) findViewById(R.id.timerValue);
