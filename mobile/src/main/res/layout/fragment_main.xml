@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textSize="40sp"
         android:textColor="#ffffff"
-        android:text="@string/time_value"
+        android:text="@string/initClock"
         android:layout_marginTop="46dp"
         android:layout_below="@+id/mode_tv"
         android:layout_centerHorizontal="true" />

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     static final String PAUSE_TITLE = "Pause";
     static final int WORK_TIME = 1;
     static final int BREAK_TIME = 2;
-    static final int MAX_BREAK_TIME = 25;
+    static final int MAX_BREAK_TIME = 5;
 
     private Button timeControlButton;
     private Handler handler = new Handler();
@@ -28,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
     long timeMilli = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
-    int numCycles = 0;
+    int numPomodoro = 1;
 
     boolean doneWork = false;
-    int pomodoroTime = 1;
+    int time = WORK_TIME;
     int totalWorkTime = 0;
     int totalBreakTime = 0;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             updatedTime = timeSwapBuff + timeMilli;
             int secs = (int) (updatedTime / 1000);
             int mins = secs/60;
-            if(secs < pomodoroTime) {
+            if(secs < time) {
                 secs %= 60;
                 int milli = (int)(updatedTime % 1000);
                 final String seconds = String.format("%02d", secs);
@@ -76,23 +77,37 @@ public class MainActivity extends AppCompatActivity {
     private Runnable updateStatusThread = new Runnable() {
         @Override
         public void run() {
+            // Flip work done value
             doneWork ^= true;
             updateStatusText();
         }
     };
 
     private void updateStatusText() {
+        // Update Number of cycles
+
+        // Update total work done time
         TextView stats;
         String statsText;
         TextView mode = (TextView)findViewById(R.id.mode_tv);
         if(doneWork){
+            if(numPomodoro==MAX_POMODORO){
+                numPomodoro = 0;
+                time = MAX_BREAK_TIME;
+            }else{
+                time = BREAK_TIME;
+            }
+            Log.d("NUMPOMO", String.valueOf(numPomodoro));
+            Log.d("TIME", String.valueOf(time));
             mode.setText(BREAK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.breakStats);
             totalWorkTime += WORK_TIME;
             statsText = String.format("%d Total Minutes of Work Time", totalWorkTime);
         }else{
+            numPomodoro ++;
             mode.setText(WORK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.workStats);
+            time = WORK_TIME;
             totalBreakTime += BREAK_TIME;
             statsText = String.format("%d Total Minutes of Break Time", totalBreakTime);
         }
@@ -111,44 +126,48 @@ public class MainActivity extends AppCompatActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
-    private void breakTime() {
-        TextView mode = (TextView)findViewById(R.id.mode_tv);
-        mode.setText(BREAK_TIME_TITLE);
-        numCycles +=1;
-        if(numCycles == MAX_POMODORO){
-            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
-            pomoCount.setText(getString(R.string.break_text));
-            numCycles = 0;
-            totalBreakTime += MAX_BREAK_TIME;
-        }else{
-            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
-            String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numCycles);
-            pomoCount.setText(pomoCountText);
-            totalBreakTime += BREAK_TIME;
-        }
-        TextView stats = (TextView)findViewById(R.id.breakStats);
-        String statsText = String.format("%d Total Minutes of Break Time",totalBreakTime);
-        stats.setText(statsText);
-        doneWork = true;
-        initClock();
-    }
+    // Manage the two types of breaks; large breaks and short breaks
+//    private void breakTime() {
+//        TextView mode = (TextView)findViewById(R.id.mode_tv);
+//        mode.setText(BREAK_TIME_TITLE);
+//        numCycles +=1;
+//        if(numCycles == MAX_POMODORO){
+//            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
+//            pomoCount.setText(getString(R.string.break_text));
+//            numCycles = 0;
+//            totalBreakTime += MAX_BREAK_TIME;
+//        }else{
+//            TextView pomoCount = (TextView)findViewById(R.id.pomoCount);
+//            String pomoCountText = String.format("%d/4 Pomodoro Cycles Complete", numCycles);
+//            pomoCount.setText(pomoCountText);
+//            totalBreakTime += BREAK_TIME;
+//        }
+//        TextView stats = (TextView)findViewById(R.id.breakStats);
+//        String statsText = String.format("%d Total Minutes of Break Time",totalBreakTime);
+//        stats.setText(statsText);
+//        doneWork = true;
+//        initClock();
+//    }
 
-    private void workTime(){
-        TextView mode = (TextView)findViewById(R.id.mode_tv);
-        mode.setText(WORK_TIME_TITLE);
-        totalWorkTime += WORK_TIME;
-        TextView stats = (TextView)findViewById(R.id.workStats);
-        String statsText = String.format("%d Total Minutes of Work Done", totalWorkTime);
-        stats.setText(statsText);
-        initClock();
-        doneWork = false;
-    }
+    // Manage Work time
+//    private void workTime(){
+//        TextView mode = (TextView)findViewById(R.id.mode_tv);
+//        mode.setText(WORK_TIME_TITLE);
+//        totalWorkTime += WORK_TIME;
+//        TextView stats = (TextView)findViewById(R.id.workStats);
+//        String statsText = String.format("%d Total Minutes of Work Done", totalWorkTime);
+//        stats.setText(statsText);
+//        initClock();
+//        doneWork = false;
+//    }
 
+    // Set value to clock
     private void setClock(String time) {
         TextView timerValue = (TextView) findViewById(R.id.timerValue);
         timerValue.setText(time);
     }
 
+    // Flip between pause time and start time
     private void swapButtonText(){
         if(timeControlButton.getText().equals(START_TITLE)){
             timeControlButton.setText(PAUSE_TITLE);
@@ -157,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Reset Clock to 0
     private void initClock(){
         initValue = 0L;
         timeSwapBuff = 0L;
