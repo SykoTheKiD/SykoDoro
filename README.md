@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/SykoTheKiD/sykodoro/badge.svg?branch=master&service=bitbucket)](https://coveralls.io/bitbucket/SykoTheKiD/sykodoro?branch=master)
+
 # SykoDoro
 An Android app that implements the Pomodoro time management technique to get more work done
 
