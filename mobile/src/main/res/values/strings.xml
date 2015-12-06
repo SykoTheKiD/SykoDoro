@@ -5,4 +5,5 @@
     <string name="control_button">Start</string>
     <string name="break_text">25 Minute Break</string>
     <string name="initClock">0:00:000</string>
+
 </resources>

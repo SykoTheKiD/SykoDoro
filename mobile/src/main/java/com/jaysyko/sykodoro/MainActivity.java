@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         timeControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                swapButtonText();
                 initValue = SystemClock.uptimeMillis();
                 handler.postDelayed(updateTimerThread, 0);
             }
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 setClock(time);
                 handler.post(this);
             }else{
+                initClock();
+                swapButtonText();
                 handler.post(updateStatusThread);
                 handler.removeCallbacksAndMessages(this);
             }
@@ -99,13 +102,13 @@ public class MainActivity extends AppCompatActivity {
                 time = BREAK_TIME;
             }
             mode.setText(BREAK_TIME_TITLE);
-            stats = (TextView)findViewById(R.id.breakStats);
+            stats = (TextView)findViewById(R.id.workStats);
             totalWorkTime += WORK_TIME;
             statsText = String.format("%d Total Minutes of Work Time", totalWorkTime);
         }else{
             numPomodoro ++;
             mode.setText(WORK_TIME_TITLE);
-            stats = (TextView)findViewById(R.id.workStats);
+            stats = (TextView)findViewById(R.id.breakStats);
             time = WORK_TIME;
             totalBreakTime += BREAK_TIME;
             statsText = String.format("%d Total Minutes of Break Time", totalBreakTime);
@@ -135,7 +138,9 @@ public class MainActivity extends AppCompatActivity {
     private void swapButtonText(){
         if(timeControlButton.getText().equals(START_TITLE)){
             timeControlButton.setText(PAUSE_TITLE);
+            timeControlButton.setEnabled(false);
         }else{
+            timeControlButton.setEnabled(true);
             timeControlButton.setText(START_TITLE);
         }
     }
