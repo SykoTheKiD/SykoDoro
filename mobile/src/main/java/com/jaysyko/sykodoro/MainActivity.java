@@ -1,9 +1,11 @@
 package com.jaysyko.sykodoro;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,33 +16,34 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final String BREAK_TIME_TITLE = "Break Time";
-    static final String WORK_TIME_TITLE = "Work Time";
-    static final int MAX_POMODORO = 4;
-    static final String START_TITLE = "Start";
-    static final String PAUSE_TITLE = "Pause";
-    static final int WORK_TIME = 1;
-    static final int BREAK_TIME = 2;
-    static final int MAX_BREAK_TIME = 5;
+    private static final String BREAK_TIME_TITLE = "Break Time";
+    private static final String WORK_TIME_TITLE = "Work Time";
+    private static final int MAX_POMODORO = 4;
+    private static final String START_TITLE = "Start";
+    private static final String PAUSE_TITLE = "Pause";
+    private static final String WORK_TIME = "10";
+    private static final String BREAK_TIME = "5";
+    private static final String MAX_BREAK_TIME = "25";
 
     private Button timeControlButton;
     private Handler handler = new Handler();
-    private long initValue = 0L;
-    long timeMilli = 0L;
-    long timeSwapBuff = 0L;
-    long updatedTime = 0L;
+    private long initValue, timeMilli, timeSwapBuff, updatedTime = 0L;
     int numPomodoro = 1;
 
+    int time, workTime, breakTime, maxBreakTime;
     boolean doneWork = false;
-    int time = WORK_TIME;
-    int totalWorkTime = 0;
-    int totalBreakTime = 0;
+    int totalWorkTime, totalBreakTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
+        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));;
+        maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
+        time = workTime;
         timeControlButton = (Button)findViewById(R.id.controlButton);
         timeControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,20 +101,20 @@ public class MainActivity extends AppCompatActivity {
         if(doneWork){
             if(numPomodoro==MAX_POMODORO){
                 numPomodoro = 0;
-                time = MAX_BREAK_TIME;
+                time = maxBreakTime;
             }else{
-                time = BREAK_TIME;
+                time = breakTime;
             }
             mode.setText(BREAK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.workStats);
-            totalWorkTime += WORK_TIME;
+            totalWorkTime += workTime;
             statsText = String.format("%d Total Minutes of Work Time", totalWorkTime);
         }else{
             numPomodoro ++;
             mode.setText(WORK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.breakStats);
-            time = WORK_TIME;
-            totalBreakTime += BREAK_TIME;
+            time = workTime;
+            totalBreakTime += breakTime;
             statsText = String.format("%d Total Minutes of Break Time", totalBreakTime);
         }
         stats.setText(statsText);

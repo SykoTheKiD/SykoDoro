@@ -8,7 +8,13 @@
     <string name="title_activity_settings">Settings</string>
     <string name="default_work_time">10</string>
     <string name="default_break_time">5</string>
-
+    <string name="default_large_break_time">25</string>
+    <string name="pref_work_title">Default Work Time</string>
+    <string name="pref_break_title">Default Break Time</string>
+    <string name="pref_large_break_title">Default Large Break</string>
+    <string name="pref_work_key">default_work_time</string>
+    <string name="pref_break_key">default_break_time</string>
+    <string name="pref_large_break_key">default_large_break</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
