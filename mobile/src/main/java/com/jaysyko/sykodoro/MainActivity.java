@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
-        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));;
+        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));
         maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
         time = workTime;
         timeControlButton = (Button)findViewById(R.id.controlButton);
@@ -89,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void displayToast() {
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_LONG;
-        String toastMessage = (doneWork) ?  "Break Time Over": "Work Time Over";
-        Toast toast = Toast.makeText(context, toastMessage, duration);
-        toast.show();
-    }
-
     private Runnable updateStatusThread = new Runnable() {
         @Override
         public void run() {
@@ -105,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
             updateStatusText();
         }
     };
+
+    private void displayToast() {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        String toastMessage = (doneWork) ?  "Break Time Over": "Work Time Over";
+        Toast toast = Toast.makeText(context, toastMessage, duration);
+        toast.show();
+    }
 
     private void updateStatusText() {
         // Update Number of cycles
