@@ -1,5 +1,6 @@
 package com.jaysyko.sykodoro;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,11 +9,13 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,13 +75,27 @@ public class MainActivity extends AppCompatActivity {
                 setClock(time);
                 handler.post(this);
             }else{
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Log.d("SLEEP THREAD",e.getMessage());
+                }
                 initClock();
+                displayToast();
                 swapButtonText();
                 handler.post(updateStatusThread);
                 handler.removeCallbacksAndMessages(this);
             }
         }
     };
+
+    private void displayToast() {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        String toastMessage = (doneWork) ?  "Break Time Over": "Work Time Over";
+        Toast toast = Toast.makeText(context, toastMessage, duration);
+        toast.show();
+    }
 
     private Runnable updateStatusThread = new Runnable() {
         @Override
