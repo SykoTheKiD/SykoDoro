@@ -27,38 +27,21 @@ public class MainActivity extends AppCompatActivity {
     private static final String WORK_TIME = "10";
     private static final String BREAK_TIME = "5";
     private static final String MAX_BREAK_TIME = "25";
-
-    private Button timeControlButton;
-    private Handler handler = new Handler();
-    private long initValue, timeMilli, timeSwapBuff, updatedTime = 0L;
     int numPomodoro = 1;
-
     int time, workTime, breakTime, maxBreakTime;
     boolean doneWork = false;
     int totalWorkTime, totalBreakTime = 0;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
-        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));
-        maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
-        time = workTime;
-        timeControlButton = (Button)findViewById(R.id.controlButton);
-        timeControlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swapButtonText();
-                initValue = SystemClock.uptimeMillis();
-                handler.postDelayed(updateTimerThread, 0);
-            }
-        });
-        setSupportActionBar(toolbar);
-    }
-
+    private Button timeControlButton;
+    private Handler handler = new Handler();
+    private long initValue, timeMilli, timeSwapBuff, updatedTime = 0L;
+    private Runnable updateStatusThread = new Runnable() {
+        @Override
+        public void run() {
+            // Flip work done value
+            doneWork ^= true;
+            updateStatusText();
+        }
+    };
     private Runnable updateTimerThread = new Runnable() {
         @Override
         public void run() {
@@ -89,14 +72,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private Runnable updateStatusThread = new Runnable() {
-        @Override
-        public void run() {
-            // Flip work done value
-            doneWork ^= true;
-            updateStatusText();
-        }
-    };
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
+        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));
+        maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
+        time = workTime;
+        timeControlButton = (Button) findViewById(R.id.controlButton);
+        timeControlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swapButtonText();
+                initValue = SystemClock.uptimeMillis();
+                handler.postDelayed(updateTimerThread, 0);
+            }
+        });
+        setSupportActionBar(toolbar);
+    }
 
     private void displayToast() {
         Context context = getApplicationContext();
@@ -146,9 +142,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings){
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+        switch (id) {
+            case (R.id.action_settings):
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case (R.id.about):
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
