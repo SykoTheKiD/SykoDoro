@@ -120,14 +120,14 @@ public class MainActivity extends AppCompatActivity {
             }
             mode.setText(BREAK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.workStats);
-            totalWorkTime += workTime;
+            totalWorkTime += time;
             statsText = String.format("%d Total Minutes of Work Time", totalWorkTime);
         }else{
             numPomodoro ++;
             mode.setText(WORK_TIME_TITLE);
             stats = (TextView)findViewById(R.id.breakStats);
             time = workTime;
-            totalBreakTime += breakTime;
+            totalBreakTime += time;
             statsText = String.format("%d Total Minutes of Break Time", totalBreakTime);
         }
         stats.setText(statsText);

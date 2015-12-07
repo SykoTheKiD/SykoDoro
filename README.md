@@ -1,6 +1,6 @@
-[![Coverage Status](https://coveralls.io/repos/SykoTheKiD/sykodoro/badge.svg?branch=master&service=bitbucket)](https://coveralls.io/bitbucket/SykoTheKiD/sykodoro?branch=master)
+[![Build Status](https://travis-ci.org/SykoTheKiD/SykoDoro.svg?branch=master)](https://travis-ci.org/SykoTheKiD/SykoDoro)
 
-# SykoDoro
+# SykoDoro (A Work in Progress)
 An Android app that implements the Pomodoro time management technique to get more work done
 
 ## What is Pomodoro?
@@ -18,6 +18,10 @@ Pomodoro is a time management technique that allows you to get more work done fa
 ## How Pomodoro works
 
 By working in short, concentrated bursts and taking breaks you prevent burnouts and keep your mind from getting tired.
+
+## Screenshots
+
+<img src="https://raw.githubusercontent.com/SykoTheKiD/SykoDoro/master/project_images/app_screen.jpg" height="500" />
 
 ## More information
 
