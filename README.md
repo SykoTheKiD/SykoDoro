@@ -10,14 +10,20 @@ Pomodoro is a time management technique that allows you to get more work done fa
   * Decide on a task
   * Start the timer; timer will run for 25 mins
   * In those 25 mins you do **NOTHING BUT THE TASK** you decided on
-  * After 25 mins you take a **5 minute** break; This entire sequence is **One Pomodoro**
-  * Repeat **3 more times** for a total of **4 Pomodoros**
-  * After the 4th pomodoro take a longer break of about **30 minitues**
+  * After completing 25 mins you have completed **"One Pomodoro"**, you can now take a **5 minute** break
+  * Repeat **3 more times** for a total of **4 Pomodoros** which is 100 minutes of work
+  * After the 4th pomodoro take a longer break of about **30 minutes** for a total of 45 minutes of break time
   * Repeat process until task is complete
   
 ## How Pomodoro works
 
 By working in short, concentrated bursts and taking breaks you prevent burnouts and keep your mind from getting tired.
+
+## Features of Sykodoro
+  * Customize the work time and break time for an activity
+  * Manage various activities you would like to manage using the Pomodoro technique
+  * **Coming Soon** Support for Android Wear 
+
 
 ## Screenshots
 
