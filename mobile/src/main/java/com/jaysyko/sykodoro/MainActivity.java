@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
         timeControlButton = (Button) findViewById(R.id.controlButton);
         final ImageView clock = (ImageView) findViewById(R.id.clock);
         final Animation clockTurn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.clock_anim);
-        clock.startAnimation(clockTurn);
         timeControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clock.startAnimation(clockTurn);
                 swapButtonText();
                 initValue = SystemClock.uptimeMillis();
                 handler.postDelayed(updateTimerThread, 0);
