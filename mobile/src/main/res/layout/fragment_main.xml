@@ -10,6 +10,17 @@
     tools:context="com.jaysyko.sykodoro.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
+    <ImageView
+        android:id="@+id/clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="clock"
+        android:padding="10dp"
+        android:src="@drawable/clock"
+        android:layout_below="@+id/mode_tv"
+        android:layout_alignLeft="@+id/mode_tv"
+        android:layout_alignStart="@+id/mode_tv" />
+
     <TextView
         android:id="@+id/timerValue"
         android:layout_width="wrap_content"

@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,22 +30,70 @@ public class MainActivity extends AppCompatActivity {
     private static final String WORK_TIME = "10";
     private static final String BREAK_TIME = "5";
     private static final String MAX_BREAK_TIME = "25";
-    int numPomodoro = 1;
-    int time, workTime, breakTime, maxBreakTime;
-    boolean doneWork = false;
-    int totalWorkTime, totalBreakTime = 0;
+
+    private final Handler handler = new Handler();
     private Button timeControlButton;
-    private Handler handler = new Handler();
+    private int numPomodoro = 1;
+    private boolean doneWork = false;
+    private int time, workTime, breakTime, maxBreakTime;
     private long initValue, timeMilli, timeSwapBuff, updatedTime = 0L;
-    private Runnable updateStatusThread = new Runnable() {
+    private int totalWorkTime, totalBreakTime = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
+        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));
+        maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
+        time = workTime;
+        timeControlButton = (Button) findViewById(R.id.controlButton);
+        final ImageView clock = (ImageView) findViewById(R.id.clock);
+        final Animation clockTurn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.clock_anim);
+        clock.startAnimation(clockTurn);
+        timeControlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swapButtonText();
+                initValue = SystemClock.uptimeMillis();
+                handler.postDelayed(updateTimerThread, 0);
+            }
+        });
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case (R.id.action_settings):
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case (R.id.about):
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private Runnable clockAnimation = new Runnable() {
+
         @Override
         public void run() {
-            // Flip work done value
-            doneWork ^= true;
-            updateStatusText();
+
         }
     };
+
     private Runnable updateTimerThread = new Runnable() {
+
         @Override
         public void run() {
             timeMilli = SystemClock.uptimeMillis() - initValue;
@@ -72,35 +123,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        workTime = Integer.valueOf(prefs.getString(getString(R.string.pref_work_key), WORK_TIME));
-        breakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_break_key), BREAK_TIME));
-        maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
-        time = workTime;
-        timeControlButton = (Button) findViewById(R.id.controlButton);
-        timeControlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swapButtonText();
-                initValue = SystemClock.uptimeMillis();
-                handler.postDelayed(updateTimerThread, 0);
-            }
-        });
-        setSupportActionBar(toolbar);
-    }
-
-    private void displayToast() {
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_LONG;
-        String toastMessage = (doneWork) ?  "Break Time Over": "Work Time Over";
-        Toast toast = Toast.makeText(context, toastMessage, duration);
-        toast.show();
-    }
+    private Runnable updateStatusThread = new Runnable() {
+        @Override
+        public void run() {
+            // Flip work done value
+            doneWork ^= true;
+            updateStatusText();
+        }
+    };
 
     private void updateStatusText() {
         // Update Number of cycles
@@ -133,24 +163,12 @@ public class MainActivity extends AppCompatActivity {
         stats.setText(statsText);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case (R.id.action_settings):
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case (R.id.about):
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    private void displayToast() {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+        String toastMessage = (doneWork) ?  "Break Time Over": "Work Time Over";
+        Toast toast = Toast.makeText(context, toastMessage, duration);
+        toast.show();
     }
 
     // Set value to clock
