@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,12 +50,13 @@ public class MainActivity extends AppCompatActivity {
         maxBreakTime = Integer.valueOf(prefs.getString(getString(R.string.pref_large_break_key), MAX_BREAK_TIME));
         time = workTime;
         timeControlButton = (Button) findViewById(R.id.controlButton);
-        final ImageView clock = (ImageView) findViewById(R.id.clock);
-        final Animation clockTurn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.clock_anim);
+        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBarToday);
+        Animation an = new RotateAnimation(0.0f, 90.0f, 250f, 273f);
+        an.setFillAfter(true);
+        pb.startAnimation(an);
         timeControlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clock.startAnimation(clockTurn);
                 swapButtonText();
                 initValue = SystemClock.uptimeMillis();
                 handler.postDelayed(updateTimerThread, 0);
@@ -196,4 +197,10 @@ public class MainActivity extends AppCompatActivity {
         timeMilli = 0L;
         setClock(getString(R.string.initClock));
     }
+
+//    private void runClockAnimation(){
+//        final ImageView clock = (ImageView) findViewById(R.id.clock);
+//        final Animation clockTurn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.clock_anim);
+//        clock.startAnimation(clockTurn);
+//    }
 }

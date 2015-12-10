@@ -10,17 +10,6 @@
     tools:context="com.jaysyko.sykodoro.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
-    <ImageView
-        android:id="@+id/clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="clock"
-        android:padding="10dp"
-        android:src="@drawable/clock"
-        android:layout_below="@+id/mode_tv"
-        android:layout_alignLeft="@+id/mode_tv"
-        android:layout_alignStart="@+id/mode_tv" />
-
     <TextView
         android:id="@+id/timerValue"
         android:layout_width="wrap_content"
@@ -30,7 +19,8 @@
         android:text="@string/initClock"
         android:layout_marginTop="46dp"
         android:layout_below="@+id/mode_tv"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/controlButton"
@@ -44,7 +34,8 @@
         android:layout_alignLeft="@+id/timerValue"
         android:layout_alignStart="@+id/timerValue"
         android:background="#565656"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +46,8 @@
         android:textColor="#ffffff"
         android:layout_below="@+id/controlButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_marginTop="39dp"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,7 +58,8 @@
         android:textColor="#ffffff"
         android:layout_marginTop="43dp"
         android:layout_below="@+id/pomoCount"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +70,8 @@
         android:textColor="#ffffff"
         android:layout_marginTop="43dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,6 +81,23 @@
         android:textColor="#ffffff"
         android:id="@+id/breakStats"
         android:layout_below="@id/workStats"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarToday"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="250dp"
+        android:layout_height="273dp"
+        android:indeterminate="false"
+        android:max="48"
+        android:progress="45"
+        android:progressDrawable="@drawable/timer"
+        android:layout_alignTop="@+id/timerValue"
+        android:layout_alignLeft="@+id/timerValue"
+        android:layout_alignStart="@+id/timerValue"
+        android:layout_alignBottom="@+id/controlButton"
+        android:layout_alignRight="@+id/mode_tv"
+        android:layout_alignEnd="@+id/mode_tv" />
 
 </RelativeLayout>

@@ -7,7 +7,7 @@
             android:shape="oval" >
             <gradient
                 android:endColor="#ffffffff"
-                android:gradientRadius="100"
+                android:gradientRadius="300"
                 android:startColor="#66ffffff"
                 android:type="radial"
                 android:useLevel="false" />
