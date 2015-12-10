@@ -23,7 +23,10 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".AboutActivity"
-            android:label="@string/title_activity_about"></activity>
+            android:label="@string/title_activity_about" />
+        <activity
+            android:name=".TaskList"
+            android:label="@string/title_activity_task_list"></activity>
     </application>
 
 </manifest>
