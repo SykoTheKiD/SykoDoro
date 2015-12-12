@@ -15,6 +15,10 @@
     <string name="pref_work_key">default_work_time</string>
     <string name="pref_break_key">default_break_time</string>
     <string name="pref_large_break_key">default_large_break</string>
+    <string name="initNumCycles">0/4 Pomodoro Cycles Complete</string>
+    <string name="initNumBreaks">0 Total Minutes of Break Time</string>
+    <string name="initNumWork">0 Total Minutes of Work Time</string>
+    <string name="defaultMode">Work Time</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
