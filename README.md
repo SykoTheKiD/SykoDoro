@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/SykoTheKiD/SykoDoro.svg?branch=master)](https://travis-ci.org/SykoTheKiD/SykoDoro)
 
-# SykoDoro (A Work in Progress)
+# SykoDoro
 An Android app that implements the Pomodoro time management technique to get more work done
 
 ## What is Pomodoro?
