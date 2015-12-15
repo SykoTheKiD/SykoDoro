@@ -1,5 +1,10 @@
 language: android
 
+env:
+  global:
+    # Add this
+    - MALLOC_ARENA_MAX=2
+
 android:
   components:
     - build-tools-23.0.1
@@ -17,6 +22,8 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+
+sudo: required
 
 script: gradle build connectedCheck
 
